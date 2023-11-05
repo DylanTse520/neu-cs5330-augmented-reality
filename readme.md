@@ -1,13 +1,21 @@
 # Project 4: Calibration and Augmented Reality
-This is Project 3: Real-time 2D Object Recognition by Yixiang Xie for CS5330 Pattern Recognition & Computer Vision. Demo link: https://drive.google.com/file/d/11xr3kna2roguuYvSC6OMji48qHacTay3/view?usp=share_link
+This is Project 4: Calibration and Augmented Reality by Yixiang Xie for CS5330 Pattern Recognition & Computer Vision.
 
 The code is written in C++ with OpenCV4 on Visual Studio Code on macOS Sonoma 14.0 and compiled with a CMakeLists.txt file.
 
 # Run the code
-In order to run the code, use command line to run the bash script by ```./run.sh```. To try different configurations, change ```./run.sh``` in the format of ```./2DObjRecog <--km> <--knn=[value]> ```. The ```--km``` is optional to enable adaptive thresholding, which uses k-means clustering with k=2 to cluster the image pixels into two groups, and use the mean value of these two centroids as the thresholding value. The ```--knn=[value]``` is optional to enable k-nearest neighbors classifier with k=[value].
+In order to run the code, use command line to run the bash script by running ```./run.sh```.
+
+By default the script will run the calibration part, which detects a chessboard for its corners and allows for taking calibration images by pressing "s". You need at least 5 images for calibration.
+
+After calibration, to view a virtual object on the chessboard, change line 5 in ```./run.sh``` to ```./ar <static image path containing a chessboard>```. The second parameter is optional. When leave out, the program will detect a chessboard and project a Utah teapot onto it. You can also pass a path to a static image containing a chessboard as the second parameter. The program will insert the teapot to the image and display it.
+
+To view the robust features detection, change line 5 in the script to ```./feature```. By default the program shows SURF features. To change between features, press "u" for SURF features, press "i" for SIFT features, press "h" for Harris corners or press "t" for Shi-Tomasi corners.
+
+Press "q" to quit either program.
 
 # Extensions
-For extensions, I developed a GUI to help labeling objects and collect training data. Press ```n``` during the system running to enable this. You should input the object number and the object label to add a new label. I have 17 objects in 13 categories in total as training objects. The data can be seen in ```./resources/data.csv```. The system allows you to classify multiple object in one time. Just put the objects in the frame to see it. It also allows for showing unknown objects. Unknown objects will be labelled as "Unknown". I also developed k-means adaptive thresholding. Use the optional parameter ```--km``` to enable this.
+For extensions, the program allow for detecting four different robust features. To test them, run the script with ```./feature```, and press "u" for SURF features, press "i" for SIFT features, press "h" for Harris corners or press "t" for Shi-Tomasi corners. I also hid the chessboard underneath a white mask. To test this, run the script with ```./ar``` and put a chessboard in the frame. I also allow using static images with chessboard to demonstrate inserting teapot in it. To test this, run the script with ```./ar <static image path containing a chessboard>``` and specify an image path with a chessboard in it.
 
 # Travel days used
-2 travel days
+1 travel days

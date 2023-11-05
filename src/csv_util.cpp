@@ -11,7 +11,7 @@ cpp functions for reading CSV files with a specific format
 - first column is a string containing a object label
 - every other column is a number
 
-The function returns a std::vector of char* for the object labels and a 2D std::vector of floats for the data
+The function returns a std::vector of char* for the object labels and a 2D std::vector of doubles for the data
 */
 
 #include <cstdio>
@@ -77,13 +77,13 @@ int getint(FILE *fp, int *v)
   return (eol); // return true if eol
 }
 
-// utility function for reading one float value from a csv file
+// utility function for reading one double value from a csv file
 //
 // fp: the file pointer
 // v: the value
 //
 // returns true if it reaches the end of a line or the file
-int getfloat(FILE *fp, float *v)
+int getdouble(FILE *fp, double *v)
 {
   char s[256];
   int p = 0;
@@ -111,7 +111,7 @@ int getfloat(FILE *fp, float *v)
   return (eol); // return true if eol
 }
 
-int append_object_data_csv(std::string filename, std::string object_label, std::vector<float> &object_feature, int reset_file)
+int append_object_data_csv(std::string filename, std::string object_label, std::vector<double> &object_feature, int reset_file)
 {
   char buffer[256];
   char mode[8];
@@ -137,7 +137,7 @@ int append_object_data_csv(std::string filename, std::string object_label, std::
   for (int i = 0; i < object_feature.size(); i++)
   {
     char tmp[256];
-    snprintf(tmp, 256, ",%.4f", object_feature[i]);
+    snprintf(tmp, 256, ",%f", object_feature[i]);
     std::fwrite(tmp, sizeof(char), strlen(tmp), fp);
   }
 
@@ -148,10 +148,10 @@ int append_object_data_csv(std::string filename, std::string object_label, std::
   return (0);
 }
 
-int read_object_data_csv(std::string filename, std::vector<std::string> &object_labels, std::vector<std::vector<float>> &object_features, int echo_file)
+int read_object_data_csv(std::string filename, std::vector<std::string> &object_labels, std::vector<std::vector<double>> &object_features, int echo_file)
 {
   FILE *fp;
-  float fval;
+  double fval;
   char object_label[256];
 
   fp = fopen(filename.c_str(), "r");
@@ -164,7 +164,7 @@ int read_object_data_csv(std::string filename, std::vector<std::string> &object_
   printf("reading %s\n", filename.c_str());
   for (;;)
   {
-    std::vector<float> dvec;
+    std::vector<double> dvec;
 
     // read the object label
     if (getstring(fp, object_label))
@@ -176,7 +176,7 @@ int read_object_data_csv(std::string filename, std::vector<std::string> &object_
     for (;;)
     {
       // get next feature
-      float eol = getfloat(fp, &fval);
+      double eol = getdouble(fp, &fval);
       dvec.push_back(fval);
       if (eol)
         break;
@@ -198,7 +198,7 @@ int read_object_data_csv(std::string filename, std::vector<std::string> &object_
       printf("%s:  ", object_labels[i].c_str());
       for (int j = 0; j < object_features[i].size(); j++)
       {
-        printf("%.4f  ", object_features[i][j]);
+        printf("%f  ", object_features[i][j]);
       }
       printf("\n");
     }
